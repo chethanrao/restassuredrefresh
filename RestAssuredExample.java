@@ -15,18 +15,18 @@ public class RestAssuredExample {
  
     @BeforeAll
     public static void setup() {
-        RestAssured.baseURI = "https://dummy.restapiexample.com/api/v1/employees";
+        RestAssured.baseURI = "https://dummy.restapiexample.com";
     }
 
     @Test
     public void verifyStatusCode() {
-        Response response = given().when().get();
+        Response response = given().when().get("/api/v1/employees");
         Assert.assertEquals("Status code is not 200",200,response.getStatusCode());
     }
 
     @Test
     public void verifyAtleastOneRecord() {
-        Response response = given().when().get();
+        Response response = given().when().get("/api/v1/employees");
         JsonPath jsonPath = response.jsonPath();
         List<Map<Object,Object>> employeeData = jsonPath.get("data");
         Assert.assertTrue("No records found",employeeData.size()>0);
@@ -34,7 +34,7 @@ public class RestAssuredExample {
 
     @Test
     public void verifyAtleastOneRecordGreaterThanHundredThousand() {
-        Response response = given().when().get();
+        Response response = given().when().get("/api/v1/employees");
         JsonPath jsonPath = response.jsonPath();
         List<Map<Object, Object>> employeeData = jsonPath.get("data.findAll{data->data.employee_salary>100000}");
         Assert.assertTrue("No records found", employeeData.size() > 0);
